@@ -1,0 +1,45 @@
+-
+  var winners = [
+      {
+        id: 5,
+        title: "Землю жрать будешь?",
+        image: "./images/recipes/zemlyu-zhrat-budesh.webp",
+        author: "paleandsweet",
+        authorLink: "https://www.instagram.com/paleandsweet/",
+        description: "Удивите гостей, поедая личинок сземлёй.",
+        category: "Десерт",
+        year: 2022,
+        place: 1,
+      },
+      {
+        id: 15,
+        title: "Чаепитие с&nbsp;Люцифером",
+        image: "./images/recipes/chaepitie-s-luciferom.webp",
+        author: "Татьяна Леонова",
+        authorLink: "https://www.instagram.com/so_tan_a/",
+        description: "Апельсиновый торт с&nbsp;маком, кровавой глазурью и&nbsp;пентаклем из&nbsp;черной мастики",
+        category: "Десерт",
+        place: 2,
+        year: 2022,
+      },
+      {
+        id: 4,
+        title: "Булочки с&nbsp;тыквенным муссом",
+        image: "./images/recipes/bulochki-tikvennyi.webp",
+        author: "Артём Скворцов",
+        authorLink: "",
+        description: "Тёплые ароматные булочки с пряным тыквенным муссом создадут приятную осеннюю атмосферу и подарят Хэллоуинское настроение.",
+        category: "Выпечка",
+        year: 2022,
+        place: 3,
+      },
+  ]
+
+section.winners
+  img(src="./images/bubbles-winners.webp", alt="").hide-for-md.winners__bubbles
+  .wrapper
+    h2 РЕЦЕПТЫ-победители 2022
+
+    .winners__items
+      each item in winners
+        +recipe(item)

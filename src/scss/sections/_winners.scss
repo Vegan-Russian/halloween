@@ -1,0 +1,31 @@
+.winners {
+    padding-block: rem(160);
+    position: relative;
+
+    h2 {
+        margin-bottom: rem(64);
+        text-align: center;
+    }
+
+    &__items {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(#{rem(300), 1fr}));
+        gap: rem(20);
+    }
+
+    &__bubbles {
+        position: absolute;
+        z-index: -1;
+        width: calc(100% - var(--wrapper-gap) * 2);
+        margin: auto;
+        max-width: rem(2000);
+        inset: 0 var(--wrapper-gap);
+    }
+
+    @include media("lg") {
+        padding-block: rem(100);
+    }
+    @include media("sm") {
+        padding-top: 0;
+    }
+}

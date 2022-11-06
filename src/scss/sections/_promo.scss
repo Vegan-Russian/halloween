@@ -23,6 +23,12 @@
         padding-bottom: calc(var(--from-header-top-shift) * 2);
     }
 
+    &__bubbles {
+        position: absolute;
+        @include inset;
+        top: rem(66);
+    }
+
     &__subtitle {
         font-size: rem(32);
         margin-bottom: rem(16);

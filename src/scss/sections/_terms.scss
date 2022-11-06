@@ -1,5 +1,6 @@
 .terms {
     padding-bottom: rem(160);
+    position: relative;
 
     &__header {
         text-align: center;
@@ -20,6 +21,15 @@
         margin-top: rem(48);
         display: block;
         text-align: center;
+    }
+
+    &__bubbles {
+        position: absolute;
+        z-index: -1;
+        width: calc(100% - var(--wrapper-gap) * 2);
+        margin: auto;
+        max-width: rem(2000);
+        inset: 0 var(--wrapper-gap);
     }
 
     @include media("md") {

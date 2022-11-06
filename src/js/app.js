@@ -60,11 +60,12 @@ function renderOldRecipesPage() {
   const recipes = Object.entries(previousRecipes);
   recipes.sort((A, B) => (Number(A[0]) < Number(B[0]) ? 1 : -1));
   recipes.forEach(([year, items]) => {
-    const winners = [];
+    let winners = [];
     const other = [];
     items.forEach((item) => {
       item.place ? winners.push(item) : other.push(item);
     });
+    winners = winners.sort((A, B) => (A.place > B.place ? 1 : -1));
     renderYearRecipesSection({ year, winners, other });
   });
 }
@@ -117,11 +118,11 @@ function getReceiptElement({ place, classes, ...recipe }) {
   root.classList = `recipe ${classes}`;
   const image = place ? `<img src="./images/medals/${place}.svg">` : "";
   root.innerHTML = `
-  <a href="/recipe.html#${
-    recipe.id
-  }" class="recipe__link" title="Перейти на страницу рецепта: ${
-    recipe.title
-  }"></a>
+  <a
+    href="/recipe.html#${recipe.id}"
+    class="recipe__link"
+    title="Перейти на страницу рецепта: ${recipe.title}">
+  </a>
   <div class="recipe__wrapper">
     <div class="recipe__image">
       <img src="${recipe.image}" alt="Фото рецепта">
