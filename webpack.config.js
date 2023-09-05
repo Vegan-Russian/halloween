@@ -162,7 +162,7 @@ module.exports = function (_, argv) {
           {
             test: /\.(jpe?g|png)/,
             options: {
-              quality: 80,
+              quality: 75,
             },
           },
         ],
