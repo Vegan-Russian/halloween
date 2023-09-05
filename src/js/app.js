@@ -262,7 +262,7 @@ function renderReceiptCards() {
 function animateItems(classToWatch, customSettings = null, lazyLoad = false) {
   let options = customSettings ?? {
     root: null,
-    rootMargin: "0px",
+    rootMargin: "70% 0% 70% 0%",
     threshold: 0,
   };
 
