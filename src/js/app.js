@@ -116,7 +116,7 @@ function getReceiptWinnerElement() {}
 function getReceiptElement({ place, classes, ...recipe }) {
   const root = document.createElement("article");
   root.classList = `recipe ${classes}`;
-  const image = place ? `<img src="./images/medals/${place}.svg">` : "";
+  const image = place ? `<data-lazy src="./images/medals/${place}.svg">` : "";
   root.innerHTML = `
   <a
     href="/recipe.html#${recipe.id}"
@@ -125,7 +125,7 @@ function getReceiptElement({ place, classes, ...recipe }) {
   </a>
   <div class="recipe__wrapper">
     <div class="recipe__image">
-      <img src="${recipe.image}" alt="Фото рецепта">
+      <img class="lazy-img" data-lazy="${recipe.image}" alt="Фото рецепта">
     </div>
     <div class="recipe__content ${place ? "recipe__content--winner" : ""}">
       <div>
@@ -259,11 +259,16 @@ function renderReceiptCards() {
  * @param {string} classToWatch
  * @param {IntersectionObserverInit} customSettings
  */
-function animateItems(classToWatch, customSettings = null) {
+function animateItems(classToWatch, customSettings = null, lazyLoad = false) {
   let options = customSettings ?? {
     root: null,
     rootMargin: "0px",
-    threshold: 0.5,
+    threshold: 0,
+  };
+
+  const loadImage = (image) => {
+    image.src = image.dataset.lazy;
+    image.removeAttribute('data-lazy');
   };
 
   const callback = (entries, observer) => {
@@ -272,7 +277,11 @@ function animateItems(classToWatch, customSettings = null) {
         const el = entry.target;
         const classToSet = el.dataset.class;
 
-        el.classList.add(classToSet ?? "reached");
+        if (lazyLoad && el.hasAttribute('data-lazy')) {
+          loadImage(el);
+        } else {
+          el.classList.add(classToSet ?? 'reached');
+        }
 
         el.classList.remove(classToWatch.substring(1));
         observer.unobserve(el);
@@ -324,6 +333,7 @@ window.onload = () => {
     }
     media.addEventListener("change", createSliderForMobile);
   });
+  animateItems(".lazy-img", null, true);
 };
 
 function createSliderForMobile(e) {
