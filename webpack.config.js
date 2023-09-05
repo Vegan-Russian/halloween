@@ -21,7 +21,7 @@ module.exports = function (_, argv) {
     pluginImgMinify = new ImageminPlugin({
       test: /\.(jpe?g|png|gif|svg)$/i,
       pngquant: {
-        quality: "84-85",
+        quality: "80-81",
       },
       gifsicle: {
         optimizationLevel: 1,
@@ -29,7 +29,7 @@ module.exports = function (_, argv) {
       svgo: null,
       plugins: [
         imageminMozjpeg({
-          quality: 85,
+          quality: 80,
           progressive: true,
         }),
       ],
@@ -162,7 +162,7 @@ module.exports = function (_, argv) {
           {
             test: /\.(jpe?g|png)/,
             options: {
-              quality: 100,
+              quality: 80,
             },
           },
         ],
