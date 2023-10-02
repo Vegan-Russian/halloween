@@ -3,11 +3,26 @@
     text-align: center;
 
     &__wrapper {
-        padding-block: rem(160);
+        padding-block: rem(51);
         position: relative;
     }
 
+    &__schedule {
+        color: #DFDCD3;
+        text-align: center;
+        font-family: Merriweather, serif;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        letter-spacing: 0.72px;
+        text-transform: uppercase;
+        margin-bottom: rem(32);
+    }
+
     &__places {
+        margin-bottom: rem(196);
+
         display: flex;
         gap: var(--gap);
         justify-content: center;
@@ -32,6 +47,10 @@
     }
 
     @include media("lg") {
+        &__schedule {
+
+        }
+
         &__wrapper {
             padding-block: rem(100);
         }
@@ -42,8 +61,16 @@
     }
 
     @include media("md") {
+        &__places {
+            margin-bottom: rem(64);
+        }
+
+        &__cow {
+            width: rem(160);
+        }
+
         &__wrapper {
-            padding-block: rem(72) rem(96);
+            padding-block: rem(56) rem(96);
         }
 
         &__title {
@@ -62,6 +89,10 @@
     }
 
     @include media("sm") {
+        &__schedule {
+            font-size: 12px;
+        }
+
         &__wrapper {
             display: flex;
             flex-direction: column;

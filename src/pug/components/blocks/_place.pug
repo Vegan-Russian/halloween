@@ -2,9 +2,15 @@
 mixin place(num)
   -
     var places = [
-      {img: "./images/medals/1.svg", text: '1 место', reward: '3000₽'},
-      {img: "./images/medals/2.svg", text: '2 место', reward: '2000₽'},
-      {img: "./images/medals/3.svg", text: '3 место', reward: '1000₽'},
+      {img: "./images/medals/2023/1.png",
+        text: '1 место',
+        reward: 'толстовка'},
+      {img: "./images/medals/2023/2.png",
+        text: '2 место',
+        reward: 'футболка'},
+      {img: "./images/medals/2023/3.png",
+        text: '3 место',
+        reward: 'кружка'},
     ]
   article.place
     img(src=`${places[num - 1].img}`, alt=`Кубок за ${places[num - 1].img}`)
