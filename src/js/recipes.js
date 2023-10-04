@@ -82,7 +82,7 @@ export const actualRecipes = [
 export const previousRecipes = {
   2022: [
     {
-      id: "2022-1",
+      id: 1,
       title: "Пальцы-сосиски",
       image: "./images/recipes/2022/sosiski-palcy.webp",
       author: "paleandsweet",
