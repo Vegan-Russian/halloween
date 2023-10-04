@@ -91,6 +91,24 @@ export const actualRecipes = [
       "Словите WA на 9 тесте.",
     ],
   },
+  {
+    id: "2023-3",
+    title: "Лампа Джека",
+    image: "./images/recipes/2023/meowmeow.webp",
+    author: "Тыковка",
+    authorLink: "https://t.me/svidilya",
+    year: 2023,
+    description: [
+      "просто супер вкусна",
+    ],
+    ingredients: [
+      "тыковки и веган молочко",
+    ],
+    category: "десерт",
+    steps: [
+      "вырежи тыкву и налей молочка",
+    ],
+  },
 ];
 
 
