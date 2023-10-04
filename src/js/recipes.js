@@ -126,6 +126,26 @@ export const actualRecipes = [
       "И блендером её хоба хоба хорошо так.",
     ],
   },
+  {
+    id: "2023-4",
+    title: "Пиюрэха!!",
+    image: "./images/recipes/2023/for_test_Vince_2023.webp",
+    author: "Lulu Grimes",
+    authorLink: "https://www.bbcgoodfood.com/recipes/pumpkin-puree",
+    year: 2023,
+    description: [
+      "Тестовый пост рецепта от Винса",
+    ],
+    ingredients: [
+      "750г тыквы",
+      "праздничное настроение",
+    ],
+    category: "На второе",
+    steps: [
+      "Возьмите тыкву",
+      "И блендером её хоба хоба хорошо так.",
+    ],
+  },
 ];
 
 
