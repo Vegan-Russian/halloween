@@ -46,7 +46,7 @@
 
 export const actualRecipes = [
   {
-    id: 1,
+    id: "2023-1",
     title: "Тыквенный Полтергейст",
     image: "./images/recipes/2023/for_test_2023.webp",
     author: "pashka",
