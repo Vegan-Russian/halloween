@@ -71,7 +71,7 @@ export const actualRecipes = [
   {
     id: "2023-2",
     title: "Рецепт боли",
-    image: "./images/recipes/2023/74737ea507dca8bb207d2e785d890248.jpg",
+    image: "./images/recipes/2023/74737ea507dca8bb207d2e785d890248.webp",
     author: "rinchik",
     authorLink: "https://t.me/twenq",
     year: 2023,
