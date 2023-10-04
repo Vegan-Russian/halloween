@@ -128,7 +128,7 @@ export const actualRecipes = [
   },
   {
     id: "2023-4",
-    title: "Пиюрэха!!",
+    title: "Тыквенное пюре: атака клонов",
     image: "./images/recipes/2023/for_test_Vince_2023.webp",
     author: "Lulu Grimes",
     authorLink: "https://www.bbcgoodfood.com/recipes/pumpkin-puree",
