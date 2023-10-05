@@ -1,0 +1,19 @@
+.testing {
+  position: relative;
+  min-height: 700px;
+  scale: 1;
+
+  @include media("md") {
+  }
+
+  @include media("sm") {
+    min-height: 633px;
+    max-height: 255px;
+    scale: 1;
+  }
+
+  @include media("xxs") {
+    //scale: 1.6;
+    //padding-top: 100px;
+  }
+}
