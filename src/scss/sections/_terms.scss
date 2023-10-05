@@ -1,5 +1,5 @@
 .terms {
-    padding-bottom: rem(160);
+    padding-bottom: rem(120);
     position: relative;
 
     &__header {
@@ -34,6 +34,15 @@
 
     @include media("md") {
         padding-bottom: rem(144);
+
+
+        &__button {
+            margin-inline: auto;
+            margin-top: rem(20);
+            scale: 0.8;
+            display: block;
+            text-align: center;
+        }
     }
 
     @include media("sm") {
