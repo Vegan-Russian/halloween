@@ -75,11 +75,11 @@
 
     @include media("sm") {
         max-width: rem(242);
-        padding: rem(18) rem(22) rem(36) rem(28);
+        padding: rem(18) rem(20) rem(36) rem(20);
         // background-position: center;
         &__title {
-            font-size: rem(13);
-            margin-bottom: rem(7);
+            font-size: rem(12);
+            margin-bottom: rem(6);
         }
         &__rule {
             font-size: rem(7);
