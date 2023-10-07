@@ -212,6 +212,7 @@ function setPageData(data) {
   const title = document.querySelector("#recipe-title");
   const author = document.querySelector("#recipe-author");
   const ingredients = document.querySelector("#recipe-ingredients");
+  const tools = document.querySelector("#recipe-tools");
   const steps = document.querySelector("#recipe-steps");
   const description = document.querySelector("#recipe-description");
   const year = document.querySelector("#recipe-year");
@@ -224,12 +225,21 @@ function setPageData(data) {
   year.innerHTML = data.year;
   description.innerHTML = data.description;
   ingredients.innerHTML = "";
+  tools.innerHTML = "";
   steps.innerHTML = "";
+
   data.ingredients.forEach((ingredient) => {
     const li = document.createElement("li");
     li.innerHTML = ingredient;
     ingredients.appendChild(li);
   });
+
+  data.tools.forEach((tool) => {
+    const li = document.createElement("li");
+    li.innerHTML = tool;
+    tools.appendChild(li);
+  });
+
   data.steps.forEach((step) => {
     const li = document.createElement("li");
     li.innerHTML = step;
