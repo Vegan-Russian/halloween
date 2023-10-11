@@ -125,7 +125,6 @@ function getReceiptElement({ place, classes, ...recipe }) {
   const image = place ? `<data-lazy src="./images/medals/${place}.svg">` : "";
   root.innerHTML = `
   <a
-<!--    href="/recipe.html#${recipe.id}"-->
     href="${getFullUrl(`/recipe.html#${recipe.id}`)}"
     class="recipe__link"
     title="Перейти на страницу рецепта: ${recipe.title}">
