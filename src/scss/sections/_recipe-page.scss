@@ -89,9 +89,9 @@
     }
 
     &__details {
-        a {
-            text-decoration: underline;
-        }
+        //a {
+        //    text-decoration: underline;
+        //}
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: var(--content-gap);
