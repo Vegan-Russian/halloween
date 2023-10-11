@@ -8,6 +8,9 @@ const fs = require("fs");
 const path = require("path");
 const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 const globImporter = require("node-sass-glob-importer");
+const baseURL = process.env.BASE_URL || '';
+
+
 
 let targetBrowser = "web";
 let pluginImgMinify = () => {};
@@ -63,7 +66,14 @@ module.exports = function (_, argv) {
       rules: [
         {
           test: /\.pug$/,
-          use: ["raw-loader", "pug-html-loader"],
+          use: [
+            'raw-loader',
+            {
+            loader: 'pug-html-loader',
+            options: {
+                data: { baseURL }  // передаем baseURL в шаблоны pug
+            }
+            }],
         },
         {
           type: "javascript/auto",
