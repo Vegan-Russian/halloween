@@ -8,11 +8,7 @@ const fs = require("fs");
 const path = require("path");
 const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 const globImporter = require("node-sass-glob-importer");
-
-const isProduction = process.env.NODE_ENV === 'production';
-console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
-const baseURL = isProduction ? 'https://halloween.veganrussian.ru' : '';
-console.log('Base URL:', baseURL);
+const baseURL = process.env.BASE_URL ? process.env.BASE_URL : '';
 
 
 

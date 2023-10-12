@@ -11,3 +11,4 @@ dist
 /images
 /i
 /fonts
+!/.github/workflows/webpack.yml
