@@ -26,7 +26,7 @@ jobs:
     - name: Build
       run: |
         npm install
-        npx webpack
+        npx webpack --mode development
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@4.1.5
       with:
