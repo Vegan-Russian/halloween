@@ -16,6 +16,9 @@ function resolveSrc(_path) {
 }
 
 module.exports = function (_, argv) {
+  const isStaging = argv.mode !== "production";
+  const baseURL = isStaging ? '/halloween.veganrussian.ru' : '';
+
   if (argv.mode === "production") {
     targetBrowser = "browserslist";
     pluginImgMinify = new ImageminPlugin({
@@ -44,6 +47,9 @@ module.exports = function (_, argv) {
         new HtmlWebpackPlugin({
           template: "src/pug/" + filename + ".pug",
           filename: filename + ".html",
+          templateParameters: {
+              baseURL  // передача baseURL в Pug-шаблоны
+          }
         })
       );
     }
