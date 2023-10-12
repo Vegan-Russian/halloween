@@ -6,10 +6,12 @@ header.header
       li.header__nav-item: <a href="/" class="underline">Главная</a>
       li.header__nav-item
         a(href=`/halloween.veganrussian.ru/#prizes` class="underline") Призы
-        a(href= + "${baseURL}/#prizes" class="underline") test_1
-        a(href= + "$baseURL/#prizes" class="underline") test_2
-        a(href= + "#{baseURL}/#prizes" class="underline") test_3
-        a(href= + "#baseURL/#prizes" class="underline") test_4
+
+        //a(href=${baseURL} + "/#prizes" class="underline") test_1
+        a(href=$baseURL + "/#prizes" class="underline") test_2
+        //a(href=baseURL + "/#prizes" class="underline") test_3
+        a(href=baseURL + "/#prizes" class="underline") test_4
+
         a(href="${baseURL}/#prizes" class="underline") test_5
         a(href=`${baseURL}/#prizes" class="underline`) test_5.1
         a(href="$baseURL/#prizes" class="underline") test_6

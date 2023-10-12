@@ -48,7 +48,7 @@ module.exports = function (_, argv) {
           template: "src/pug/" + filename + ".pug",
           filename: filename + ".html",
           templateParameters: {
-              baseURL  // передача в Pug-шаблоны
+              baseURL
           }
         })
       );
