@@ -17,7 +17,7 @@ function resolveSrc(_path) {
 
 module.exports = function (_, argv) {
   const isStaging = argv.mode !== "production";
-  const baseURL = isStaging ? '/halloween.veganrussian.ru' : '';
+  const baseURL = isStaging ? '/halloween.veganrussian.ru' : '/';
 
   if (argv.mode === "production") {
     targetBrowser = "browserslist";
