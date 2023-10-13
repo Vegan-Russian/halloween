@@ -8,7 +8,7 @@ const fs = require("fs");
 const path = require("path");
 const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 const globImporter = require("node-sass-glob-importer");
-const baseURL = process.env.BASE_URL ? process.env.BASE_URL : '';
+const baseURL = process.env.BASE_URL || '';
 
 
 
@@ -60,7 +60,7 @@ module.exports = function (_, argv) {
     output: {
       filename: "[name].[contenthash].js",
       path: path.resolve(__dirname, "dist"),
-      publicPath: "./",
+      publicPath: baseURL ? `${baseURL}/` : "./",
     },
     module: {
       rules: [
