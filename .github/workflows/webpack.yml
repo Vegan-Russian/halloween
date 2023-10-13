@@ -29,7 +29,7 @@ jobs:
         if [[ $GITHUB_REPOSITORY == "seal-pavel/halloween.veganrussian.ru" ]]; then
           echo "::set-output name=BASE_URL::https://seal-pavel.github.io/halloween.veganrussian.ru/"
         else
-          echo "::set-output name=BASE_URL::'test'
+          echo "::set-output name=BASE_URL::'test'"
         fi
 
     - name: Build
