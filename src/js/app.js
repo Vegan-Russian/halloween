@@ -114,12 +114,11 @@ function getReceiptWinnerElement() {}
  * @returns {HTMLElement}
  */
 
-// function getFullUrl(relativeUrl) {
-//   const isStaging = window.location.hostname.includes('github.io');
-//   const baseURL = isStaging ? '/halloween.veganrussian.ru' : '';
-//   return `${baseURL}${relativeUrl}`;
-// }
-//     href="${getFullUrl(`/recipe.html#${recipe.id}`)}"
+function getFullUrl(relativeUrl) {
+  const isStaging = window.location.hostname.includes('github.io');
+  const baseURL = isStaging ? '/halloween.veganrussian.ru' : '';
+  return `${baseURL}${relativeUrl}`;
+}
 
 function getReceiptElement({ place, classes, ...recipe }) {
   const root = document.createElement("article");
@@ -127,7 +126,7 @@ function getReceiptElement({ place, classes, ...recipe }) {
   const image = place ? `<data-lazy src="./images/medals/${place}.svg">` : "";
   root.innerHTML = `
   <a
-    href="/recipe.html#${recipe.id}"
+    href="${getFullUrl(`/recipe.html#${recipe.id}`)}"
     class="recipe__link"
     title="Перейти на страницу рецепта: ${recipe.title}">
   </a>

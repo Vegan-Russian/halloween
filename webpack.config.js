@@ -60,7 +60,7 @@ module.exports = function (_, argv) {
     output: {
       filename: "[name].[contenthash].js",
       path: path.resolve(__dirname, "dist"),
-      publicPath: baseURL ? `${baseURL}/` : "./",
+      publicPath: "./",
     },
     module: {
       rules: [
