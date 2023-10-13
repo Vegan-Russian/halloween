@@ -1,5 +1,5 @@
 mixin back-arrow(url = '/')
-  a(href=url title="Вернуться назад").back-arrow
+  a(href=`${baseURL}${url}` title="Вернуться назад").back-arrow
     span.hide-for-sm
       include ./../../../images/arr-left.svg
     span.show-for-sm
