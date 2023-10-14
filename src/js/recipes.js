@@ -231,7 +231,7 @@ export const actualRecipes = [
     {
         id: "2023-5",
         title: "Дань повелителю тыкв",
-        image: "./images/recipes/2023/dan'-povelitelyu-tykv.webp",
+        image: "./images/recipes/2023/dan-povelitelyu-tykv.webp",
         author: "Диана",
         authorLink: "",
         year: 2023,
