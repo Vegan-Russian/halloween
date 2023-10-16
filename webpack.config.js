@@ -8,6 +8,9 @@ const fs = require("fs");
 const path = require("path");
 const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 const globImporter = require("node-sass-glob-importer");
+const baseURL = process.env.BASE_URL || '';
+
+
 
 let targetBrowser = "web";
 let pluginImgMinify = () => {};
@@ -16,9 +19,6 @@ function resolveSrc(_path) {
 }
 
 module.exports = function (_, argv) {
-  const isStaging = argv.mode !== "production";
-  const baseURL = isStaging ? '/halloween.veganrussian.ru' : '';
-
   if (argv.mode === "production") {
     targetBrowser = "browserslist";
     pluginImgMinify = new ImageminPlugin({
@@ -47,9 +47,6 @@ module.exports = function (_, argv) {
         new HtmlWebpackPlugin({
           template: "src/pug/" + filename + ".pug",
           filename: filename + ".html",
-          templateParameters: {
-              baseURL
-          }
         })
       );
     }
@@ -69,7 +66,14 @@ module.exports = function (_, argv) {
       rules: [
         {
           test: /\.pug$/,
-          use: ["raw-loader", "pug-html-loader"],
+          use: [
+            'raw-loader',
+            {
+            loader: 'pug-html-loader',
+            options: {
+                data: { baseURL }  // передаем baseURL в шаблоны pug
+            }
+            }],
         },
         {
           type: "javascript/auto",

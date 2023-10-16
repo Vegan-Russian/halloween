@@ -1,6 +1,6 @@
 mixin recipe(recipe)
   article.recipe
-    a.recipe__link(href=`/recipe.html#${recipe.id}` title=`Перейти на страницу рецепта: ${recipe.title}`)
+    a.recipe__link(href=`${baseURL}/recipe.html#${recipe.id}` title=`Перейти на страницу рецепта: ${recipe.title}`)
     .recipe__wrapper
       .recipe__image
         img(src=`${recipe.image}` alt='Фото рецепта')
