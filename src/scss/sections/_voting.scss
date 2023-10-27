@@ -2,7 +2,12 @@
     position: relative;
     min-height: 700px;
     scale: 1;
-    padding-bottom: rem(32);
+    padding-bottom: rem(140);
+
+    &__widget {
+        display: contents;
+
+    }
 
     &__title {
         margin-bottom: rem(32);
@@ -18,17 +23,11 @@
     }
 
     @include media("sm") {
-        min-height: 633px;
-        max-height: 255px;
-        scale: 1;
-
-        &__title {
-            margin-top: rem(32);
-        }
+        padding-bottom: rem(80);
     }
 
     @include media("xxs") {
-        //scale: 1.6;
-        //padding-top: 100px;
+        //height: 2100px;
+        //padding-bottom: rem(32);
     }
 }
