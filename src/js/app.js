@@ -1,7 +1,6 @@
 import "swiper/css";
 import "../scss/style.scss";
-import { actualRecipes, previousRecipes } from "./recipes";
-import Swiper, { Pagination } from "swiper";
+import Swiper, {Pagination} from "swiper";
 
 let sliders = null;
 
@@ -23,54 +22,7 @@ function lockScroll(needToLock = true) {
   document.body.classList[needToLock ? "add" : "remove"]("scroll-lock");
 }
 
-/**
- * Приводим объект с рецептами прошлых лет к плоскому массиву, объединяем с массивом актуальных рецептов
- */
-function getAllRecipes() {
-  const oldRecipes = Object.values(previousRecipes).flat();
-  return oldRecipes.concat(actualRecipes);
-}
-
-/**
- * Ищем нужный рецепт по хэшу в поисковой строке.
- * Если находим — запускаем @function setPageData, которая подставит нужные данные на странице рецепта
- * Если нет — выводим сообщение о том, что рецепт не найден
- * @param {string | number} hash
- */
-function loadReceipt(hash) {
-  const recipe = getAllRecipes().find(
-    (item) => item.id == hash.replace("#", "")
-  );
-
-  const warnText = document.querySelector("#recipe-not-found");
-  const receiptHTML = document.querySelector("#recipe");
-  if (!recipe) {
-    warnText.classList.remove("hidden");
-    receiptHTML.classList.add("hidden");
-    return;
-  }
-
-  warnText.classList.add("hidden");
-  receiptHTML.classList.remove("hidden");
-
-  setPageData(recipe);
-}
-
-function renderOldRecipesPage() {
-  const recipes = Object.entries(previousRecipes);
-  recipes.sort((A, B) => (Number(A[0]) < Number(B[0]) ? 1 : -1));
-  recipes.forEach(([year, items]) => {
-    let winners = [];
-    const other = [];
-    items.forEach((item) => {
-      item.place ? winners.push(item) : other.push(item);
-    });
-    winners = winners.sort((A, B) => (A.place > B.place ? 1 : -1));
-    renderYearRecipesSection({ year, winners, other });
-  });
-}
-
-function renderYearRecipesSection({ year, winners, other }) {
+function renderYearRecipesSection({year, winners, other}) {
   const HTMLRoot = document.querySelector(".past-competition");
 
   const root = document.createElement("section");
@@ -106,42 +58,31 @@ function renderYearRecipesSection({ year, winners, other }) {
   HTMLRoot.insertAdjacentElement("beforeend", root);
 }
 
-function getReceiptWinnerElement() {}
-
-/**
- *
- * @param {*} recipe
- * @returns {HTMLElement}
- */
-
 function getFullUrl(relativeUrl) {
   const isStaging = window.location.hostname.includes('github.io');
   const baseURL = isStaging ? '/halloween.veganrussian.ru' : '';
   return `${baseURL}${relativeUrl}`;
 }
 
-function getReceiptElement({ place, classes, ...recipe }) {
+function getReceiptElement({image, title, category, year, id, place}) {
   const root = document.createElement("article");
-  root.classList = `recipe ${classes}`;
-  const image = place ? `<data-lazy src="./images/medals/${place}.svg">` : "";
+  root.classList = `recipe`;
+  const medalImage = place ? `<img src="./images/medals/${place}.svg" alt="Medal">` : "";
   root.innerHTML = `
-  <a
-    href="${getFullUrl(`/recipe.html#${recipe.id}`)}"
-    class="recipe__link"
-    title="Перейти на страницу рецепта: ${recipe.title}">
-  </a>
-  <div class="recipe__wrapper">
-    <div class="recipe__image">
-      <img class="lazy-img" data-lazy="${recipe.image}" alt="Фото рецепта">
-    </div>
-    <div class="recipe__content ${place ? "recipe__content--winner" : ""}">
-      <div>
-        <p class="recipe__category">${recipe.category}</p>
-        <p class="recipe__name">${recipe.title}</p>
+    <a href="${getFullUrl(`/recipe.html#${id}`)}" class="recipe__link" title="Перейти на страницу рецепта: ${title}">
+    </a>
+    <div class="recipe__wrapper">
+      <div class="recipe__image">
+        <img class="lazy-img" data-lazy="${image}" alt="Фото рецепта: ${title}">
       </div>
-      ${image}
+      <div class="recipe__content ${place ? "recipe__content--winner" : ""}">
+        <div>
+          <p class="recipe__category">${category}</p>
+          <p class="recipe__name">${title}</p>
+        </div>
+        ${medalImage}
+      </div>
     </div>
-  </div>
   `;
   return root;
 }
@@ -172,7 +113,7 @@ function setCauldronTextPosition() {
 function setPromoMobileHeight(isMobile = true) {
   const cauldron = document.querySelector("#cauldron");
   const promo = document.querySelector(".promo__content");
-  const { height } = cauldron.getBoundingClientRect();
+  const {height} = cauldron.getBoundingClientRect();
   if (isMobile) {
     promo.style.height = height + 90 + "px";
     return;
@@ -212,7 +153,6 @@ function handleBurgerMenuLogic() {
 
 /**
  * Подставляем нужные данные на странице рецепта в соответствующие поля
- * @param {} data
  */
 function setPageData(data) {
   const image = document.querySelector("#recipe-image");
@@ -228,46 +168,61 @@ function setPageData(data) {
   image.setAttribute("src", data.image);
   title.innerHTML = data.title;
   author.innerHTML = data.author;
-  author.href = data.authorLink;
+  author.href = data.author_link; // Обновлено для соответствия новой структуре
   year.innerHTML = data.year;
   description.innerHTML = data.description;
-  ingredients.innerHTML = "";
-  tools.innerHTML = "";
-  steps.innerHTML = "";
 
-  data.ingredients.forEach((ingredient) => {
-    const li = document.createElement("li");
-    li.innerHTML = ingredient;
-    ingredients.appendChild(li);
-  });
+  // Исправлено для соответствия структуре данных
+  ingredients.innerHTML = data.ingredients.map(ingredient =>
+    `<li>${ingredient.name}</li>`
+  ).join('');
 
-  data.tools.forEach((tool) => {
-    const li = document.createElement("li");
-    li.innerHTML = tool;
-    tools.appendChild(li);
-  });
+  tools.innerHTML = data.tools.map(tool =>
+    `<li>${tool}</li>`
+  ).join('');
 
-  data.steps.forEach((step) => {
-    const li = document.createElement("li");
-    li.innerHTML = step;
-    steps.appendChild(li);
-  });
+  steps.innerHTML = data.steps.map(step =>
+    `<li>${step}</li>`
+  ).join('');
 
   const today = new Date();
-  button.classList[today.getFullYear() === data.year ? "remove" : "add"](
-    "hidden"
-  );
+  if (button) {
+    button.classList[today.getFullYear() === data.year ? "remove" : "add"]("hidden");
+  }
 }
 
 /**
  * Отрисовываем массив с рецептами на главной странице на основе данных из файла recipes.js с актуальными рецптами
  *
  */
-function renderReceiptCards() {
+function renderReceiptCards(recipes) {
   const receiptItems = document.querySelector("#recipe-items");
   if (!receiptItems) return;
-  const items = actualRecipes.map(getReceiptElement);
+
+  // Очищаем существующие элементы перед добавлением новых
+  receiptItems.innerHTML = '';
+
+  // Используем переданные данные для создания элементов
+  const items = recipes.map(recipe => getReceiptElement(recipe));
   receiptItems.append(...items);
+}
+
+function organizeAndRenderRecipesByYear(recipes) {
+  const recipesByYear = recipes.reduce((acc, recipe) => {
+    const year = recipe.year;
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(recipe);
+    return acc;
+  }, {});
+
+  Object.entries(recipesByYear).sort((a, b) => b[0] - a[0]) // Сортировка по годам
+    .forEach(([year, recipes]) => {
+      const winners = recipes.filter(recipe => recipe.place && recipe.place <= 3);
+      const other = recipes.filter(recipe => !recipe.place || recipe.place > 3);
+      renderYearRecipesSection({year, winners, other});
+    });
 }
 
 /**
@@ -321,24 +276,25 @@ window.onload = () => {
   document.body.classList.remove("transition-lock");
   animateItems(".observed");
 
-  const { hash, pathname } = window.location;
+  const {hash, pathname} = window.location;
+
   if (pathname.includes("/recipe")) {
-    loadReceipt(hash);
+    const recipeId = hash.replace("#", "");
+    fetchRecipeById(recipeId).catch(console.error);
 
     window.addEventListener("hashchange", (event) => {
-      const { newURL } = event;
+      const {newURL} = event;
       const [, newHash] = newURL.split("#");
-      loadReceipt(newHash);
+      fetchRecipeById(newHash.replace("#", "")).catch(console.error); // Адаптируйте обработчик для использования fetchRecipeById
     });
+  } else if (pathname.includes("past-competition")) {
+    fetchRecipesForPastCompetitions().catch(console.error);
+    console.log("Место для функции загрузки данных о прошлых конкурсах");
+  } else {
+    fetchAllRecipes().catch(console.error); // Загружаем все рецепты для главной страницы или других страниц
   }
 
-  if (pathname.includes("past-competition")) {
-    renderOldRecipesPage();
-  }
-
-  renderReceiptCards();
   handleBurgerMenuLogic();
-
   setCauldronTextPosition();
   window.addEventListener("resize", setCauldronTextPosition);
 
@@ -350,7 +306,6 @@ window.onload = () => {
     }
     media.addEventListener("change", createSliderForMobile);
   });
-  animateItems(".lazy-img", null, true);
 };
 
 function createSliderForMobile(e) {
@@ -371,5 +326,59 @@ function createSliderForMobile(e) {
     });
   } else if (sliders && Array.isArray(sliders)) {
     sliders.forEach((slider) => slider.destroy(true, true));
+  }
+}
+
+async function fetchAllRecipes() {
+  try {
+    const response = await fetch('https://seal-pavel.website/api/v1/recipes/');
+    if (!response.ok) {
+      throw new Error('Не удалось загрузить рецепты');
+    }
+    const recipes = await response.json();
+    renderReceiptCards(recipes); // Передаём загруженные данные в функцию
+  } catch (error) {
+    console.error("Ошибка при загрузке рецептов: ", error);
+    // Обработка ошибок
+  }
+}
+
+async function fetchRecipesForPastCompetitions() {
+  try {
+    const response = await fetch('https://seal-pavel.website/api/v1/recipes/');
+    if (!response.ok) {
+      throw new Error('Не удалось загрузить рецепты');
+    }
+    const recipes = await response.json();
+    organizeAndRenderRecipesByYear(recipes);
+    animateItems(".lazy-img", null, true);
+  } catch (error) {
+    console.error("Ошибка при загрузке рецептов: ", error);
+    // Обработка ошибок
+  }
+}
+
+async function fetchRecipeById(id) {
+  // Элемент для отображения, если рецепт не найден
+  const warnText = document.querySelector("#recipe-not-found");
+  // Контейнер для деталей рецепта
+  const receiptHTML = document.querySelector(".recipe-page__receipt");
+  try {
+    const response = await fetch(`https://seal-pavel.website/api/v1/recipes/${id}/`);
+    if (!response.ok) {
+      throw new Error(`Не удалось загрузить рецепт с ID ${id}`);
+    }
+    const recipe = await response.json();
+
+    // Поскольку рецепт успешно загружен, скрываем сообщение об ошибке и показываем контент
+    if (warnText) warnText.classList.add("hidden");
+    if (receiptHTML) receiptHTML.classList.remove("hidden");
+
+    setPageData(recipe); // Отображение деталей рецепта
+  } catch (error) {
+    console.error("Ошибка при загрузке рецепта: ", error);
+    // Показываем сообщение об ошибке и скрываем контент рецепта
+    if (warnText) warnText.classList.remove("hidden");
+    if (receiptHTML) receiptHTML.classList.add("hidden");
   }
 }

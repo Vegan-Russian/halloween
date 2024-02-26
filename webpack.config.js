@@ -160,6 +160,12 @@ module.exports = function (_, argv) {
       },
       hot: true,
       writeToDisk: true,
+      historyApiFallback: {
+      rewrites: [
+        // Перенаправление запросов на /past-competition на past-competition.html
+        { from: /^\/past-competition$/, to: '/past-competition.html' },
+        ]
+      }
     },
     plugins: [
       ...templates,
