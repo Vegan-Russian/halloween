@@ -28,10 +28,13 @@ function renderYearRecipesSection({year, winners, other}) {
   const root = document.createElement("section");
   root.classList = "recipes-by-year";
 
-  const winnersElement = winners.map((item) => {
+  const winnersElement = winners
+  .sort((a, b) => a.place - b.place) // Сортировка мест
+  .map(item => {
     item.classes = "swiper-slide";
     return getReceiptElement(item);
   });
+
   const slider = document.createElement("section");
   slider.classList = "swiper recipes-by-year__slider";
   const sliderWrapper = document.createElement("div");
@@ -56,6 +59,8 @@ function renderYearRecipesSection({year, winners, other}) {
   root.insertAdjacentElement("beforeend", slider);
   root.insertAdjacentElement("beforeend", otherElementSection);
   HTMLRoot.insertAdjacentElement("beforeend", root);
+
+  createSliderForMobile()
 }
 
 function getFullUrl(relativeUrl) {
@@ -66,7 +71,7 @@ function getFullUrl(relativeUrl) {
 
 function getReceiptElement({image, title, category, year, id, place}) {
   const root = document.createElement("article");
-  root.classList = `recipe`;
+  root.classList = `recipe swiper-slide`;
   const medalImage = place ? `<img src="./images/medals/${place}.svg" alt="Medal">` : "";
   root.innerHTML = `
     <a href="${getFullUrl(`/recipe.html#${id}`)}" class="recipe__link" title="Перейти на страницу рецепта: ${title}">
@@ -209,11 +214,13 @@ function renderReceiptCards(recipes) {
 
 function organizeAndRenderRecipesByYear(recipes) {
   const recipesByYear = recipes.reduce((acc, recipe) => {
-    const year = recipe.year;
-    if (!acc[year]) {
-      acc[year] = [];
+    if (recipe.published) { // Проверяем, что рецепт опубликован
+      const year = recipe.year;
+      if (!acc[year]) {
+        acc[year] = [];
+      }
+      acc[year].push(recipe);
     }
-    acc[year].push(recipe);
     return acc;
   }, {});
 
@@ -239,7 +246,7 @@ function animateItems(classToWatch, customSettings = null, lazyLoad = false) {
   };
 
   const loadImage = (image) => {
-    image.src = image.dataset.lazy;
+    image.src = image.dataset.lazy; // Заменяем data-lazy на src
     image.removeAttribute('data-lazy');
   };
 
@@ -289,9 +296,8 @@ window.onload = () => {
     });
   } else if (pathname.includes("past-competition")) {
     fetchRecipesForPastCompetitions().catch(console.error);
-    console.log("Место для функции загрузки данных о прошлых конкурсах");
   } else {
-    fetchAllRecipes().catch(console.error); // Загружаем все рецепты для главной страницы или других страниц
+    fetchCurrentRecipes().catch(console.error); // Загружаем все рецепты для главной страницы или других страниц
   }
 
   handleBurgerMenuLogic();
@@ -308,40 +314,56 @@ window.onload = () => {
   });
 };
 
-function createSliderForMobile(e) {
-  if (e && e.matches) {
-    sliders = new Swiper(".swiper", {
-      modules: [Pagination],
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      spaceBetween: 20,
-      slidesPerView: 1,
-      breakpoints: {
-        420: {
-          slidesPerView: "auto",
-        },
-      },
-    });
-  } else if (sliders && Array.isArray(sliders)) {
+function createSliderForMobile() {
+  if (sliders && Array.isArray(sliders)) {
     sliders.forEach((slider) => slider.destroy(true, true));
   }
+  sliders = new Swiper(".swiper", {
+    modules: [Pagination],
+    lazy: true,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    // spaceBetween: 10,
+    slidesPerView: 3, // На десктопе показываем 3 слайда
+    breakpoints: {
+      // На узких экранах, включая мобильные устройства, показываем 1 слайд
+      320: {
+        slidesPerView: 1,
+        spaceBetween: 20
+      },
+      // На средних экранах показываем 2 слайда
+      500: {
+        slidesPerView: 2,
+        spaceBetween: 20
+      },
+      // На широких экранах показываем 3 слайда
+      1024: {
+        slidesPerView: 3,
+        // spaceBetween: 20
+      },
+    }
+  });
 }
 
-async function fetchAllRecipes() {
+async function fetchCurrentRecipes() {
   try {
     const response = await fetch('https://seal-pavel.website/api/v1/recipes/');
     if (!response.ok) {
       throw new Error('Не удалось загрузить рецепты');
     }
     const recipes = await response.json();
-    renderReceiptCards(recipes); // Передаём загруженные данные в функцию
+    const currentYear = new Date().getFullYear();
+    // Фильтруем рецепты, исключая текущий год и включая только опубликованные
+    const filteredRecipes = recipes.filter(recipe => recipe.year === currentYear && recipe.published);
+    renderReceiptCards(filteredRecipes); // Передаём только активные рецепты текущего года
+    animateItems(".lazy-img", null, true); // Активируем ленивую загрузку для изображений
   } catch (error) {
     console.error("Ошибка при загрузке рецептов: ", error);
-    // Обработка ошибок
   }
 }
+
 
 async function fetchRecipesForPastCompetitions() {
   try {
@@ -350,7 +372,9 @@ async function fetchRecipesForPastCompetitions() {
       throw new Error('Не удалось загрузить рецепты');
     }
     const recipes = await response.json();
-    organizeAndRenderRecipesByYear(recipes);
+    const currentYear = new Date().getFullYear();
+    const pastYearRecipes = recipes.filter(recipe => recipe.year !== currentYear); // Исключаем рецепты текущего года
+    organizeAndRenderRecipesByYear(pastYearRecipes);
     animateItems(".lazy-img", null, true);
   } catch (error) {
     console.error("Ошибка при загрузке рецептов: ", error);
