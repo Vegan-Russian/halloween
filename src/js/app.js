@@ -29,11 +29,11 @@ function renderYearRecipesSection({year, winners, other}) {
   root.classList = "recipes-by-year";
 
   const winnersElement = winners
-  .sort((a, b) => a.place - b.place) // Сортировка мест
-  .map(item => {
-    item.classes = "swiper-slide";
-    return getReceiptElement(item);
-  });
+    .sort((a, b) => a.place - b.place) // Сортировка мест
+    .map(item => {
+      item.classes = "swiper-slide";
+      return getReceiptElement(item);
+    });
 
   const slider = document.createElement("section");
   slider.classList = "swiper recipes-by-year__slider";
@@ -178,9 +178,14 @@ function setPageData(data) {
   description.innerHTML = data.description;
 
   // Исправлено для соответствия структуре данных
-  ingredients.innerHTML = data.ingredients.map(ingredient =>
-    `<li>${ingredient.name}</li>`
-  ).join('');
+  ingredients.innerHTML = data.ingredients.map(ingredient => {
+    if (ingredient.url) {
+      // Создаём элемент списка с гиперссылкой
+      return `<li><a href="${ingredient.url}" target="_blank">${ingredient.name}</a></li>`;
+    } else {
+      return `<li>${ingredient.name}</li>`;
+    }
+  }).join('');
 
   tools.innerHTML = data.tools.map(tool =>
     `<li>${tool}</li>`
