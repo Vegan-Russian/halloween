@@ -69,7 +69,7 @@ function getFullUrl(relativeUrl) {
   return `${baseURL}${relativeUrl}`;
 }
 
-function getReceiptElement({image, title, category, year, id, place}) {
+function getReceiptElement({image_average_url, title, category, year, id, place}) {
   const root = document.createElement("article");
   root.classList = `recipe swiper-slide`;
   const medalImage = place ? `<img src="./images/medals/${place}.svg" alt="Medal">` : "";
@@ -78,7 +78,7 @@ function getReceiptElement({image, title, category, year, id, place}) {
     </a>
     <div class="recipe__wrapper">
       <div class="recipe__image">
-        <img class="lazy-img" data-lazy="${image}" alt="Фото рецепта: ${title}">
+        <img class="lazy-img" data-lazy="${image_average_url}" alt="Фото рецепта: ${title}">
       </div>
       <div class="recipe__content ${place ? "recipe__content--winner" : ""}">
         <div>
