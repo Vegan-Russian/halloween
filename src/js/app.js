@@ -170,7 +170,7 @@ function setPageData(data) {
   const year = document.querySelector("#recipe-year");
   const button = document.querySelector("#recipe-button");
 
-  image.setAttribute("src", data.image);
+  image.setAttribute("src", data.image_average_url);
   title.innerHTML = data.title;
   author.innerHTML = data.author;
   author.href = data.author_link; // Обновлено для соответствия новой структуре
