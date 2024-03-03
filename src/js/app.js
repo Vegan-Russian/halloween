@@ -72,7 +72,6 @@ function getFullUrl(relativeUrl) {
 function getReceiptElement({image_average_url, title, category, year, id, place}) {
   const root = document.createElement("article");
   root.classList = `recipe swiper-slide`;
-  const medalImage = place ? `<img src="./images/medals/${place}.svg" alt="Medal">` : "";
   root.innerHTML = `
     <a href="${getFullUrl(`/recipe.html#${id}`)}" class="recipe__link" title="Перейти на страницу рецепта: ${title}">
     </a>
@@ -85,7 +84,6 @@ function getReceiptElement({image_average_url, title, category, year, id, place}
           <p class="recipe__category">${category}</p>
           <p class="recipe__name">${title}</p>
         </div>
-        ${medalImage}
       </div>
     </div>
   `;
@@ -302,7 +300,7 @@ window.onload = () => {
   } else if (pathname.includes("past-competition")) {
     fetchRecipesForPastCompetitions().catch(console.error);
   } else {
-    fetchCurrentRecipes().catch(console.error); // Загружаем все рецепты для главной страницы или других страниц
+    fetchCurrentRecipes().catch(console.error); // Загружаем рецепты для главной страницы
   }
 
   handleBurgerMenuLogic();
@@ -353,19 +351,53 @@ function createSliderForMobile() {
 }
 
 async function fetchCurrentRecipes() {
-  try {
-    const response = await fetch('https://seal-pavel.website/api/v1/recipes/');
-    if (!response.ok) {
-      throw new Error('Не удалось загрузить рецепты');
+  const title = document.querySelector('.recipes .wrapper header h2');
+  let year = new Date().getFullYear();
+  let yearRecipes = [];
+
+  while (yearRecipes.length === 0 && year > 2020) { // Нижний предел для предотвращения бесконечного цикла
+    try {
+      // Получаем победителей за текущий год
+      const winnersResponse = await fetch(`https://seal-pavel.website/api/v1/recipes/winners/year/${year}/`);
+      if (!winnersResponse.ok) {
+        throw new Error(`Не удалось проверить победителей за ${year} год`);
+      }
+      const winners = await winnersResponse.json();
+
+      // Если победителей за текущий год нет (пустой список), загружаем рецепты-конкурсантов текущего года
+      if (winners.length === 0) {
+        // Получаем рецепты-конкурсантов за текущий год
+        const recipesResponse = await fetch(`https://seal-pavel.website/api/v1/recipes/year/${year}/`);
+        if (!recipesResponse.ok) {
+          throw new Error('Не удалось загрузить рецепты-конкурсантов');
+        }
+        const yearRecipes = await recipesResponse.json();
+        // Если рецептов-конкурсантов за текущий год нет (пустой список), переходим к предыдущему году
+        if (yearRecipes.length === 0) {
+          year--;
+        } else {
+          // Обновляем год в заголовке
+          if (title && year) {
+            title.setAttribute('data-year', year); // Обновляем атрибут data-year
+            title.textContent = `рецепты-конкурсанты ${year}`; // Обновляем текст заголовка
+          }
+          document.querySelector('.recipes').style.display = ''; // Показываем секцию с рецептами-конкурсантами
+          renderReceiptCards(yearRecipes); // Передаём рецепты на отображение
+          animateItems(".lazy-img", null, true); // Активируем ленивую загрузку для изображений
+          break;
+        }
+
+      } else {
+        document.querySelector('.winners').style.display = ''; // Показываем секцию с рецептами победителями
+
+        displayWinners(winners, year); // Загружаем рецепты победителей
+        break;
+      }
+
+    } catch (error) {
+      console.error("Ошибка: ", error);
+      break;
     }
-    const recipes = await response.json();
-    const currentYear = new Date().getFullYear();
-    // Фильтруем рецепты, исключая текущий год и включая только опубликованные
-    const filteredRecipes = recipes.filter(recipe => recipe.year === currentYear && recipe.published);
-    renderReceiptCards(filteredRecipes); // Передаём только активные рецепты текущего года
-    animateItems(".lazy-img", null, true); // Активируем ленивую загрузку для изображений
-  } catch (error) {
-    console.error("Ошибка при загрузке рецептов: ", error);
   }
 }
 
@@ -377,15 +409,22 @@ async function fetchRecipesForPastCompetitions() {
       throw new Error('Не удалось загрузить рецепты');
     }
     const recipes = await response.json();
-    const currentYear = new Date().getFullYear();
-    const pastYearRecipes = recipes.filter(recipe => recipe.year !== currentYear); // Исключаем рецепты текущего года
-    organizeAndRenderRecipesByYear(pastYearRecipes);
+
+    // Предполагаем, что у нас нет прямого поля `hasWinners`, и используем логику проверки наличия победителей
+    // Например, фильтруем рецепты, у которых есть place (не null) - это наш критерий наличия победителей
+    const yearsWithWinners = new Set(recipes.filter(recipe => recipe.place !== null).map(recipe => recipe.year));
+
+    // Теперь фильтруем рецепты, оставляя только те, что относятся к годам с победителями
+    const recipesWithWinners = recipes.filter(recipe => yearsWithWinners.has(recipe.year));
+
+    organizeAndRenderRecipesByYear(recipesWithWinners);
     animateItems(".lazy-img", null, true);
   } catch (error) {
     console.error("Ошибка при загрузке рецептов: ", error);
     // Обработка ошибок
   }
 }
+
 
 async function fetchRecipeById(id) {
   // Элемент для отображения, если рецепт не найден
@@ -410,4 +449,40 @@ async function fetchRecipeById(id) {
     if (warnText) warnText.classList.remove("hidden");
     if (receiptHTML) receiptHTML.classList.add("hidden");
   }
+}
+
+
+function displayWinners(winners, year) {
+
+  const container = document.getElementById('recipe-winner-items');
+  const title = document.querySelector('.winners .wrapper h2');
+
+  // Обновляем год в заголовке
+  if (title && year) {
+    title.setAttribute('data-year', year); // Обновляем атрибут data-year
+    title.textContent = `РЕЦЕПТЫ-победители ${year}`; // Обновляем текст заголовка
+  }
+
+  container.innerHTML = ''; // Очистить предыдущие данные
+
+  winners.forEach(winner => {
+    const element = document.createElement('article');
+    element.className = 'recipe';
+    element.innerHTML = `
+      <a class="recipe__link" href="/recipe.html#${winner.id}" title="Перейти на страницу рецепта: ${winner.title}"></a>
+      <div class="recipe__wrapper">
+        <div class="recipe__image">
+          <img src="${winner.image_average_url}" alt="Фото рецепта: ${winner.title}">
+        </div>
+        <div class="recipe__content recipe__content--winner">
+          <div>
+            <p class="recipe__category">${winner.category}</p>
+            <p class="recipe__name">${winner.title}</p>
+          </div>
+          <img src="./images/medals/${winner.place}.svg" alt="Medal">
+        </div>
+      </div>
+    `;
+    container.appendChild(element);
+  });
 }

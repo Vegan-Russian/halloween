@@ -1,33 +1,5 @@
--
-  var winners = [
-      {
-        id: "207",
-        title: "Ведьминский суп",
-        image: "https://seal-pavel.website/media/recipes/2023/vedminsky-sup.png",
-        year: 2023,
-        place: 1,
-      },
-      {
-        id: "205",
-        title: "Людоедская похлёбка",
-        image: "https://seal-pavel.website/media/recipes/2023/pokhlyobka.jpg",
-        year: 2023,
-        place: 2,
-      },
-      {
-        id: "197",
-        title: "Одной ногой в аду",
-        image: "https://seal-pavel.website/media/recipes/2023/one-leg-in-the-grave.jpg",
-        year: 2023,
-        place: 3,
-      },
-  ]
-
-section.winners
+section.winners(style="display: none;")
   img(src="./images/bubbles-winners.webp", alt="").hide-for-md.winners__bubbles
   .wrapper
-    h2 РЕЦЕПТЫ-победители 2023
-
-    .winners__items
-      each item in winners
-        +recipe(item)
+    h2 РЕЦЕПТЫ-победители
+    .winners__items#recipe-winner-items
