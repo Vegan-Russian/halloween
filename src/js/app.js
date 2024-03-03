@@ -463,13 +463,13 @@ function displayWinners(winners, year) {
     title.textContent = `РЕЦЕПТЫ-победители ${year}`; // Обновляем текст заголовка
   }
 
-  container.innerHTML = ''; // Очистить предыдущие данные
+  container.innerHTML = ''; // Очистить предыдущие данные href="${getFullUrl(`/recipe.html#${winner.id}`)}"
 
   winners.forEach(winner => {
     const element = document.createElement('article');
     element.className = 'recipe';
     element.innerHTML = `
-      <a class="recipe__link" href=${getFullUrl(`/recipe.html#${winner.id}`)}" title="Перейти на страницу рецепта: ${winner.title}"></a>
+      <a class="recipe__link" href="${getFullUrl(`/recipe.html#${winner.id}`)}" title="Перейти на страницу рецепта: ${winner.title}"></a>
       <div class="recipe__wrapper">
         <div class="recipe__image">
           <img src="${winner.image_average_url}" alt="Фото рецепта: ${winner.title}">
