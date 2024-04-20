@@ -358,7 +358,7 @@ async function fetchCurrentRecipes() {
   while (yearRecipes.length === 0 && year > 2020) { // Нижний предел для предотвращения бесконечного цикла
     try {
       // Получаем победителей за текущий год
-      const winnersResponse = await fetch(`https://seal-pavel.website/api/v1/recipes/winners/year/${year}/`);
+      const winnersResponse = await fetch(`https://seal-pavel.website/halloween-vegan-backend-stage/api/v1/recipes/winners/year/${year}/`);
       if (!winnersResponse.ok) {
         throw new Error(`Не удалось проверить победителей за ${year} год`);
       }
@@ -367,7 +367,7 @@ async function fetchCurrentRecipes() {
       // Если победителей за текущий год нет (пустой список), загружаем рецепты-конкурсантов текущего года
       if (winners.length === 0) {
         // Получаем рецепты-конкурсантов за текущий год
-        const recipesResponse = await fetch(`https://seal-pavel.website/api/v1/recipes/year/${year}/`);
+        const recipesResponse = await fetch(`https://seal-pavel.website/halloween-vegan-backend-stage/api/v1/recipes/year/${year}/`);
         if (!recipesResponse.ok) {
           throw new Error('Не удалось загрузить рецепты-конкурсантов');
         }
@@ -404,7 +404,7 @@ async function fetchCurrentRecipes() {
 
 async function fetchRecipesForPastCompetitions() {
   try {
-    const response = await fetch('https://seal-pavel.website/api/v1/recipes/');
+    const response = await fetch('https://seal-pavel.website/halloween-vegan-backend-stage/api/v1/recipes/');
     if (!response.ok) {
       throw new Error('Не удалось загрузить рецепты');
     }
@@ -432,7 +432,7 @@ async function fetchRecipeById(id) {
   // Контейнер для деталей рецепта
   const receiptHTML = document.querySelector(".recipe-page__receipt");
   try {
-    const response = await fetch(`https://seal-pavel.website/api/v1/recipes/${id}/`);
+    const response = await fetch(`https://seal-pavel.website/halloween-vegan-backend-stage/api/v1/recipes/${id}/`);
     if (!response.ok) {
       throw new Error(`Не удалось загрузить рецепт с ID ${id}`);
     }
