@@ -2,9 +2,9 @@
     max-width: rem(590);
     margin-inline: auto;
     background-image: url(./../images/scroll.png);
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
-    padding-block: rem(50) rem(100);
+    padding-block: rem(50) rem(152);
     color: var(--black-color);
     padding-inline: rem(84);
     position: relative;
@@ -31,7 +31,7 @@
         text-align: left;
 
         font-size: rem(16);
-        font-style: italic;
+        font-style: normal;
         font-family: "Merriweather", serif;
         & + & {
             margin-top: rem(8);
