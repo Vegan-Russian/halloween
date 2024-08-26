@@ -26,10 +26,10 @@
     &__bubbles {
         position: absolute;
         z-index: -1;
-        width: calc(100% - var(--wrapper-gap) * 2);
+        width: calc(100% - var(--wrapper-gap));
         margin: auto;
         max-width: rem(2000);
-        inset: 0 var(--wrapper-gap);
+        inset: 0 calc(var(--wrapper-gap)/2);
     }
 
     @include media("md") {

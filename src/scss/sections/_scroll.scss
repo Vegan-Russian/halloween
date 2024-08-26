@@ -1,12 +1,13 @@
 .scroll {
     max-width: rem(590);
+    min-height: rem(852);
     margin-inline: auto;
-    background-image: url(./../images/scroll.png);
-    background-size: cover;
+    background-image: url(./../images/scroll_long.png);
+    background-size: 100%;
     background-repeat: no-repeat;
-    padding-block: rem(50) rem(152);
+    padding-block: rem(74) rem(152);
     color: var(--black-color);
-    padding-inline: rem(84);
+    padding-inline: rem(64) rem(36);
     position: relative;
 
     &__title {
@@ -43,8 +44,8 @@
 
     &__spoon {
         position: absolute;
-        bottom: rem(16);
-        right: 0;
+        bottom: rem(-40);
+        right: rem(100);
         transform: translateX(#{rem(250)});
     }
 
