@@ -7,6 +7,7 @@
     color: var(--latte-color);
     //padding-inline: rem(17.5);
     &__sum {
+        max-width: 300px;
         padding: rem(8) rem(16);
         color: var(--dark-purple-color);
         font-weight: bold;

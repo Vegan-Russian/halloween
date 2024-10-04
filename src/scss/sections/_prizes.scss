@@ -24,15 +24,16 @@
         margin-bottom: rem(196);
 
         display: flex;
-        gap: var(--gap);
+        gap: rem(80);
         justify-content: center;
+        z-index: 10;
     }
 
     &__title {
         margin-bottom: rem(32);
         letter-spacing: 0.04em;
         text-transform: uppercase;
-        text-shadow: 3px 3px 0px var(--black-color);
+        text-shadow: 3px 3px 0 var(--black-color);
         color: #fff;
     }
 
@@ -44,6 +45,7 @@
         position: absolute;
         right: 0;
         bottom: 0;
+        z-index: 0;
     }
 
     @include media("lg") {
@@ -109,7 +111,7 @@
 
         &__title {
             margin-bottom: rem(32);
-            text-shadow: 2px 1px 0px var(--black-color);
+            text-shadow: 2px 1px 0 var(--black-color);
         }
 
         &__desc {
@@ -121,4 +123,8 @@
             }
         }
     }
+}
+
+.prizes img {
+    height: 300px;
 }
