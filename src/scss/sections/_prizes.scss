@@ -39,6 +39,8 @@
 
     &__desc {
         margin-bottom: rem(64);
+
+        z-index: 1;
     }
 
     &__cow {
