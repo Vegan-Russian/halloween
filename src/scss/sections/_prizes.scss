@@ -107,6 +107,7 @@
 
         &__places {
             margin-bottom: rem(32);
+            flex-direction: column;
         }
 
         &__title {
