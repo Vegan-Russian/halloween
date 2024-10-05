@@ -14,6 +14,7 @@
         font-size: rem(24);
         background-color: var(--latte-color);
         border-radius: rem(100);
+        z-index: 10;
     }
 
     @include media("md") {
