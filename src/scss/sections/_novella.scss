@@ -32,6 +32,7 @@
     }
 
     &__bubbles {
+        pointer-events: none;
         position: absolute;
         z-index: -1;
         width: calc(100% - var(--wrapper-gap));
